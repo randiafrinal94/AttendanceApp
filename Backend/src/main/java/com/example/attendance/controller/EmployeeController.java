@@ -26,4 +26,11 @@ public class EmployeeController {
     public ResponseEntity<List<Employee>> getAllEmployees() {
         return ResponseEntity.ok(employeeService.getAllEmployees());
     }
+
+    @PutMapping("/profile")
+    public ResponseEntity<Employee> updateProfile(
+            @Valid @RequestBody com.example.attendance.dto.ProfileUpdateRequest request,
+            java.security.Principal principal) {
+        return ResponseEntity.ok(employeeService.updateProfile(principal.getName(), request));
+    }
 }

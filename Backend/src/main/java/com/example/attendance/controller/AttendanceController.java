@@ -1,13 +1,15 @@
 package com.example.attendance.controller;
 
-import com.example.attendance.dto.AttendanceRequest;
-import com.example.attendance.entity.Attendance;
+import com.example.attendance.dto.AttendanceDTO;
 import com.example.attendance.service.AttendanceService;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -18,17 +20,17 @@ public class AttendanceController {
     private AttendanceService attendanceService;
 
     @PostMapping("/checkin")
-    public ResponseEntity<?> checkIn(@Valid @RequestBody AttendanceRequest request) {
-        return ResponseEntity.ok(attendanceService.checkIn(request.getEmployeeId()));
+    public ResponseEntity<?> checkIn(Principal principal) {
+        return ResponseEntity.ok(attendanceService.checkIn(principal.getName()));
     }
 
     @PostMapping("/checkout")
-    public ResponseEntity<?> checkOut(@Valid @RequestBody AttendanceRequest request) {
-        return ResponseEntity.ok(attendanceService.checkOut(request.getEmployeeId()));
+    public ResponseEntity<?> checkOut(Principal principal) {
+        return ResponseEntity.ok(attendanceService.checkOut(principal.getName()));
     }
 
     @GetMapping
-    public ResponseEntity<List<Attendance>> getAllAttendance() {
+    public ResponseEntity<List<AttendanceDTO>> getAllAttendance() {
         return ResponseEntity.ok(attendanceService.getAllAttendance());
     }
 }
